@@ -13,9 +13,17 @@ function assertEquals(arg1, arg2) {
 
 
 cache.pushKey("key");
+cache.pushKey("key1");
 cache.pushValue("value");
+cache.pushValue("value1");
+cache.pushKey("key2");
+cache.pushValue("value2");
+cache.pushValue("value3");
 
 assertEquals("value", cache.get("key"));
+assertEquals("value1", cache.get("key1"));
+assertEquals("value2", cache.get("key2"));
+assertEquals(null, cache.get("key3"));
 
 setTimeout(function () {
 	assertEquals(true, cache.containsKey("key"));
