@@ -25,6 +25,10 @@ function Chromecast(data, appId) {
     this.requestStatus();
 }
 
+Chromecast.prototype.getStatus = function () {
+    return this.status;
+};
+
 Chromecast.prototype.requestStatus = function(){
     var opt = {
         method: 'GET',
