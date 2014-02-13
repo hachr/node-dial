@@ -1,21 +1,34 @@
-var Discovery = require("./lib/discovery").Discovery;
+//make sure we have config.json
+try {
+	require('./config.json');
+} catch (e) {
+	console.error("You need to have a config.json to start this service. Use config.json.tmpl as a template.");
+	process.exit(1);
+}
 
-var discovery = new Discovery({notify: true}); //TODO: [medium] (nhat) - change notify to something that make more sense.
+var dialServer = require('./lib/engine');
 
-discovery.on('metadata', function (data) {
-	console.log("metadata");
-	console.log(JSON.stringify(data));
-});
+var os = require('os');
+var infoHandler = function (req, res) {
+	var memoryUsage = process.memoryUsage();
+	var totalmem = os.totalmem();
+	var freemem = os.freemem();
+	var cpus = os.cpus();
 
-discovery.on('discovered', function (data) {
-	console.log("discovered");
-	console.log(JSON.stringify(data));
-});
+	res.end(JSON.stringify({
+		memoryUsage: memoryUsage,
+		totalmem: totalmem,
+		freemem: freemem,
+		cpus: cpus
+	}, null, 4));
+
+};
+
+//add some dynamic routes to illustrate the extending capability
+dialServer.registerRoutes([
+	{method: "get", path: "/sysinfo", handler: infoHandler}
+]);
 
 
-discovery.start();
-
-
-setTimeout(function(){
-	discovery.stop();
-}, 12000);
+//start it
+dialServer.start();

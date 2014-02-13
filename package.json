@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"author": "hachr",
 	"dependencies": {
-		"xml2js": "*",
-		"node-ssdp": "*"
+		"winston": "*",
+		"express": "*",
+		"node-uuid": "*"
 	}
 }
